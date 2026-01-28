@@ -10,3 +10,5 @@ class Order(Base):
     order_date = Column(DateTime(timezone=True), server_default=func.now())
     status = Column(String, nullable=False, server_default='pending')
     user = relationship("User")
+
+    items = relationship("OrderItem", back_populates="order")
