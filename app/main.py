@@ -1,6 +1,6 @@
 from fastapi import FastAPI
 
-from .routers import user, admin, category, product
+from .routers import user, admin, category, product, public_product
 
 app = FastAPI(
     title="E-commerce REST API",
@@ -16,6 +16,8 @@ app.include_router(admin.router)
 app.include_router(category.router)
 
 app.include_router(product.router)
+
+app.include_router(public_product.router)
 
 @app.get("/")
 def read_root():
