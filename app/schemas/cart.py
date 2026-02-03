@@ -1,41 +1,49 @@
 # app/schemas/cart.py
 
-from pydantic import BaseModel
+from pydantic import BaseModel, Field, ConfigDict
 from typing import List
-
+from decimal import Decimal
 # Import ProductOut schema to nest product details within the cart item response.
 from .product import ProductOut
 
 # --- Cart Item Schema ---
 # This schema will represent a single item within a user's cart.
 class CartItemOut(BaseModel):
-    """
-    Schema for an item returned from the cart. It includes the quantity
-    and the full product details.
-    """
+    product: ProductOut
     quantity: int
 
-    # This is the key part for nesting. The 'product' field will be populated
-    # with data that conforms to the ProductOut schema. Pydantic will automatically
-    # handle the serialization of the nested SQLAlchemy 'product' relationship object.
-    product: ProductOut
+    model_config = ConfigDict(from_attributes=True)
 
-    class Config:
-        # Enable ORM mode to allow creating this Pydantic model from a
-        # SQLAlchemy ORM object.
-        from_attributes = True
+
+
 
 # --- Cart Schema ---
 # This schema represents the entire shopping cart.
 class CartOut(BaseModel):
-    """
-    Schema for the entire shopping cart, including its ID and a list of all items.
-    """
-    id: int
-
-    # The 'items' field will be a list, where each element in the list
-    # conforms to the CartItemOut schema we defined above.
     items: List[CartItemOut]
+    total_price: Decimal
 
-    class Config:
-        from_attributes = True
+    model_config = ConfigDict(from_attributes=True)
+
+
+
+
+
+class CartItemAdd(BaseModel):
+    """
+    Schema for the data required to add a new item to the cart.
+    """
+    product_id: int
+    # We use Pydantic's Field to add validation. The quantity must be
+    # an integer that is "greater than" 0. This prevents users from
+    # adding zero or a negative number of items to their cart.
+    quantity: int = Field(gt=0, description="The quantity of the product to add.")
+
+
+class CartItemUpdate(BaseModel):
+    """
+    Schema for updating the quantity of an item already in the cart.
+    """
+    # Just like when adding, the quantity must be a positive integer.
+    # We enforce this with Pydantic's Field validation.
+    quantity: int = Field(gt=0, description="The new quantity for the cart item.")
