@@ -74,7 +74,6 @@ CI/CD: GitHub Actions
 
 ## Project Structure
 ``
-.
 ├── app/
 │   ├── routers/        # API route handlers
 │   ├── models/         # SQLAlchemy models
@@ -157,4 +156,5 @@ Secrets managed via environment variables
 .env.example provided for setup guidance
 
 No credentials committed to the repository
+
 
