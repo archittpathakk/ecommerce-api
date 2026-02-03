@@ -1,0 +1,31 @@
+# Git and project files
+.git
+.gitignore
+.dockerignore
+README.md
+
+# Environment variables
+.env
+.env.example
+
+# Python artifacts
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.egg-info/
+
+# Virtual environments
+venv/
+.venv/
+env/
+
+# Testing artifacts
+.pytest_cache/
+htmlcov/
+.coverage
+
+# IDE / OS files
+.vscode/
+.idea/
+*.DS_Store
